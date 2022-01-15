@@ -31,8 +31,8 @@ main {
 .content-container {
     background-color:rgb(196, 194, 194);
     border: solid black 2px;
-    width: 50%;
-    height: 50%;
+    width: 65%;
+    height: 65%;
     padding: 10px;
     display:block; 
     justify-content: center;

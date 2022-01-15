@@ -3,7 +3,26 @@ var timeLeft = document.querySelector("#time-left");
 var highScoresDisplay = document.querySelector("#high-scores");
 var startButton = document.querySelector("#start-button");
 
-console.log(timeLeft);
+console.log(document.getElementsByClassName("content"));
+
+//create bank of question objects (array)
+var questionBank = [
+    questionOne = {
+        Q: "What is 2 + 2?",
+        A: "3",
+        B: "4",
+        C: "6",
+        D: "8"
+    },
+    questionTwo = {
+        Q: "What is 3 + 3?",
+        A: "3",
+        B: "4",
+        C: "5",
+        D: "6"
+    },
+];
+
 
 //delete start-up screen inside <main>
 
@@ -26,26 +45,26 @@ var startButtonHandler = function(event) {
         }
     }, 1000);
 
-    
+    //delete start-up content
+    var deleteContent = function() {
+
+        var content = document.getElementsByClassName("content");
+            console.log(content);
+            while(content.length > 0){
+                content[0].parentNode.removeChild(content[0]);
+            }
+        }  
+
+    deleteContent();
 };
 
-//create timer function
-// var countDown = function() {
-//     console.log("countDown has started.")
-//     var currentTime = 75;
-//     console.log(currentTime);
-
-//     setInterval(currentTime, 1000)
-//         currentTime --;
-//         document.getElementById("#time-left").innerHTML = "Time Left: " + currentTime;
-//     }
-
-//     console.log("countDown has finished.")
-// };
 
 //create question container
+var newQuestion = function() {
 
-//create bank of question objects (array)
+};
+
+
 
 //create question generation function
 
@@ -57,6 +76,6 @@ var startButtonHandler = function(event) {
 //create high scores screen (get from localStorage, display on the screen)
 
 
-//TODO: button press to delete html inside content creator and start generating questions
+//button press to delete html inside content creator and start generating questions
 startButton.addEventListener("click", startButtonHandler);
 
