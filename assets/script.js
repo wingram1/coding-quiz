@@ -15,29 +15,29 @@ var questionBank = [
     },
     questionTwo = {
         question: "What is 1 + 3?",
-        answerCorrect: "3",
-        wrong1: "4",
+        answerCorrect: "4",
+        wrong1: "3",
         wrong2: "6",
         wrong3: "8"
     },
     questionThree = {
         question: "What is 2 + 3?",
-        answerCorrect: "3",
+        answerCorrect: "5",
         wrong1: "4",
         wrong2: "6",
         wrong3: "8"
     },
     questionFour = {
         question: "What is 3 + 3?",
-        answerCorrect: "3",
+        answerCorrect: "6",
         wrong1: "4",
-        wrong2: "6",
+        wrong2: "5",
         wrong3: "8"
     },
     questionFive = {
         question: "What is 2 + 2?",
-        answerCorrect: "3",
-        wrong1: "4",
+        answerCorrect: "4",
+        wrong1: "5",
         wrong2: "6",
         wrong3: "8"
     },
@@ -98,35 +98,72 @@ var nextQuestion = function(questionIndex) {
 
     debugger;
 
-//TODO: generate answers in random order
+    var answerChoices = [
+        currentQuestion.answerCorrect,
+        currentQuestion.wrong1,
+        currentQuestion.wrong2,
+        currentQuestion.wrong3
+    ];
 
-    var randomAnswerOrder = function(answerBank) {
+    //shuffle answers
+    shuffleAnswers(answerChoices)
 
-    }; //todo very incomplete
-//     var answerA = document.createElement("h2");
-//     answerA.className = "content";
-//     answerA.id= "answer";
-//     answerA.innerHTML = "A: " + currentQuestion.A;
-//     container.appendChild(answerA);
+    //create answer elements
+    var answerA = document.createElement("h2");
+    answerA.className = "content";
+    answerA.id= "answer";
+    answerA.innerHTML = "A: " + answerChoices[0];
+    container.appendChild(answerA);
 
-//     var answerB = document.createElement("h2");
-//     answerB.className = "content";
-//     answerB.id= "answer";
-//     answerB.innerHTML = "B: " + currentQuestion.B;
-//     container.appendChild(answerB);
+    var answerB = document.createElement("h2");
+    answerB.className = "content";
+    answerB.id= "answer";
+    answerB.innerHTML = "B: " + answerChoices[1];
+    container.appendChild(answerB);
 
-//     var answerC = document.createElement("h2");
-//     answerC.className = "content";
-//     answerC.id= "answer";
-//     answerC.innerHTML = "C: " + currentQuestion.C;
-//     container.appendChild(answerC);
+    var answerC = document.createElement("h2");
+    answerC.className = "content";
+    answerC.id= "answer";
+    answerC.innerHTML = "C: " + answerChoices[2];
+    container.appendChild(answerC);
 
-//     var answerD = document.createElement("h2");
-//     answerD.className = "content";
-//     answerD.id= "answer";
-//     answerD.innerHTML = "D: " + currentQuestion.D;
-//     container.appendChild(answerD);
+    var answerD = document.createElement("h2");
+    answerD.className = "content";
+    answerD.id= "answer";
+    answerD.innerHTML = "A: " + answerChoices[3];
+    container.appendChild(answerD);
 };
+
+//function to put answer properties into an array and shuffle
+var shuffleAnswers = function(answerBank) {
+    //log old answers array
+    console.log("OLD: " + answerChoices);
+
+    //set variable 
+    var currentIndex = answerChoices.length, temporaryValue, randomIndex;
+
+    // USE FISHER-YATES SHUFFLE TO SHUFFLE ARRAY
+    while (currentIndex !== 0) {
+        //randomize randomIndex
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        //decrease currentIndex
+        currentIndex--;
+
+        //set temporary value to old index
+        temporaryValue = answerChoices[currentIndex];
+        //set currentIndex to the randomized value
+        answerChoices[currentIndex] = answerChoices[randomIndex];
+        //set the random index to the old current index
+        answerChoices[randomIndex] = temporaryValue;
+    }
+    //log answerChoices to ensure the function worked
+    console.log("FINAL: " + answerChoices);
+    return answerChoices;
+}; 
+
+
+
+
 
 
 //TODO: create finish screen (upload score and name to localStorage)
