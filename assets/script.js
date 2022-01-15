@@ -13,18 +13,20 @@ console.log(timeLeft);
 var startButtonHandler = function(event) {
     var targetEl = event.target;
     console.log("startButton has been clicked.");
-    var currentTime = 10;
+    var timeLeft = 10;
     
-    // //start timer
-    // var countDown = setInterval(function() {
-    //     currentTime--;
-    //     document.querySelector("#time-left").innerHTML = "Time Left: " + currentTime;
-    // }, 1000)
+    //start timer
+    var countDown = setInterval(function() {
+        document.querySelector("#time-left").innerHTML = "Time Left: " + timeLeft;
+        timeLeft--;
+    
+        if (timeLeft < 0) {
+            clearInterval(countDown);
+            console.log("countDown has completed");
+        }
+    }, 1000);
 
-    // if (currentTime <= 0) {
-    //     clearInterval(countDown);
-    //     console.log("countDown has completed");
-    // }
+    
 };
 
 //create timer function
