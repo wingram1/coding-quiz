@@ -44,12 +44,12 @@ main {
     font-size: 36px;
 }
 
-.question {
+#question {
     font-weight: bold;
     font-size: 30px;
 }
 
-.answer {
+#answer {
     font-size: 24px
 }
 
