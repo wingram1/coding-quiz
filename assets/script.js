@@ -2,7 +2,9 @@
 var timeLeft = document.querySelector("#time-left");
 var highScoresDisplay = document.querySelector("#high-scores");
 var startButton = document.querySelector("#start-button");
-var container = document.querySelector(".content-container")
+var container = document.querySelector(".content-container");
+var currentQuestion = 0;
+var userScore = 0;
 
 //create bank of question objects (array)
 var questionBank = [
@@ -75,15 +77,8 @@ var startButtonHandler = function(event) {
     //delete content inside the container
     deleteContent();
 
-    //function to loop through five questions
-    for (let i = 0; i <=5; i++) {
-        var currentQuestion = i;
-        console.log(currentQuestion);
-        nextQuestion(currentQuestion);
-
-        //clear container for next question
-        deleteContent();
-    };
+    //Start nextQuestion function
+    nextQuestion(currentQuestion);
 };
 
 //create question generation function
@@ -130,17 +125,28 @@ var nextQuestion = function(questionIndex) {
     var answerD = document.createElement("h2");
     answerD.className = "content";
     answerD.id= "answer";
-    answerD.innerHTML = "A: " + answerChoices[3];
+    answerD.innerHTML = "D: " + answerChoices[3];
     container.appendChild(answerD);
+
+    //TODO: let user choose answer
+    //TODO: if pickedAnswer === currentQuestion.answerCorrect, then userScore++ && NextQuestion(); && display correct
+        //todo else if pickedAnswer === currentQuestion.answerWrong1/2/3, then nextQuestion(); && display correct
+
+    //TODO: when no more questions, display score and have user enter name to be stored in localStorage
+    //TODO: display highscores in localStorage
+
+    //TODO: add more questions (not important rn, just get code functioning)
+
+
 };
 
 //function to put answer properties into an array and shuffle
 var shuffleAnswers = function(answerBank) {
     //log old answers array
-    console.log("OLD: " + answerChoices);
+    console.log("OLD: " + answerBank);
 
     //set variable 
-    var currentIndex = answerChoices.length, temporaryValue, randomIndex;
+    var currentIndex = answerBank.length, temporaryValue, randomIndex;
 
     // USE FISHER-YATES SHUFFLE TO SHUFFLE ARRAY
     while (currentIndex !== 0) {
@@ -150,20 +156,18 @@ var shuffleAnswers = function(answerBank) {
         currentIndex--;
 
         //set temporary value to old index
-        temporaryValue = answerChoices[currentIndex];
+        temporaryValue = answerBank[currentIndex];
         //set currentIndex to the randomized value
-        answerChoices[currentIndex] = answerChoices[randomIndex];
+        answerBank[currentIndex] = answerBank[randomIndex];
         //set the random index to the old current index
-        answerChoices[randomIndex] = temporaryValue;
+        answerBank[randomIndex] = temporaryValue;
     }
     //log answerChoices to ensure the function worked
-    console.log("FINAL: " + answerChoices);
-    return answerChoices;
+    console.log("FINAL: " + answerBank);
+    return answerBank;
 }; 
 
-
-
-
+//TODO: have nextQuestion() pause the for loop to allow the user to answer the question
 
 
 //TODO: create finish screen (upload score and name to localStorage)
