@@ -5,9 +5,15 @@ var container = document.querySelector(".content-container");
 // var currentQuestion = 0;
 var questionMarker = 0;
 var userScore = 0;
-var timeLeft = 75;
+var maxTime = 25;
+var timeLeft = 0;
+var timerStop = false;
+var timerId = null;
+
+
 
 //create bank of question objects (array)
+//TODO: replace with questions pertaining to coding
 var questionBank = [
     questionOne = {
         question: "What is 1 + 2?",
@@ -51,30 +57,43 @@ var questionBank = [
 var deleteContent = function() {
 
     var content = document.getElementsByClassName("content");
-        while(content.length > 0){
-            content[0].parentNode.removeChild(content[0]);
-        }
-    }  
+    while(content.length > 0){
+        content[0].parentNode.removeChild(content[0]);
+    }
+};
 
+
+//TODO: timer function doesn't stop when finishQuiz() happens
+var countDown = function(){
+    timeLeft = maxTime;
+    timerId = setInterval(function() {
+    timeLeft--;
+    document.querySelector("#time-left").innerHTML = "Time Left: " + timeLeft;
+
+    if (timeLeft <= 0 || timerStop == true) {
+        //stop timer and finish quiz
+        clearInterval(timerId);
+        timerStop = true;
+        timeLeft = 0;
+        console.log("countDown has completed");
+        finishQuiz();
+    }
+}, 1000);
+}
 
 //Function to start the quiz
 var startButtonHandler = function(event) {
-    var targetEl = event.target;
+    var targetEl = event.target; //todo: unneeded?
     console.log("startButton has been clicked.");
-    // var timeLeft = 75;
+
+    //reset variables
+    questionMarker = 0;
+    timeLeft = maxTime;
+    userScore = 0;
+    timerStop = false;
     
     //start timer
-    var countDown = setInterval(function() {
-        document.querySelector("#time-left").innerHTML = "Time Left: " + timeLeft;
-        timeLeft--;
-    
-        if (timeLeft <= 0) {
-            //stop timer and finish quiz
-            clearInterval(countDown);
-            console.log("countDown has completed");
-            // finishQuiz();
-        }
-    }, 1000);
+    countDown();
 
     //delete content inside the container
     deleteContent();
@@ -143,7 +162,7 @@ var nextQuestion = function(questionIndex) {
         answerB.id= "answerB";
         answerB.innerHTML = "B: " + answerChoices[1];
         container.appendChild(answerB);
-    answerB.addEventListener("click", function(){chooseAnswerHandler(answerChoices[1]); });
+        answerB.addEventListener("click", function(){chooseAnswerHandler(answerChoices[1]); });
 
         var answerC = document.createElement("h2");
         answerC.className = "content answer";
@@ -157,17 +176,10 @@ var nextQuestion = function(questionIndex) {
         answerD.id= "answerD";
         answerD.innerHTML = "D: " + answerChoices[3];
         container.appendChild(answerD);
-        answerD.addEventListener("click", function(){chooseAnswerHandler(answerChoices[3]); });
-
-
-
-        //TODO: when no more questions, display score and have user enter name to be stored in localStorage
-        //TODO: display highscores in localStorage
-
-        //TODO: add more questions (not important rn, just get code functioning)
-    
+        answerD.addEventListener("click", function(){chooseAnswerHandler(answerChoices[3]); });    
     }
     else {
+        //if no more questions, finish quiz
         finishQuiz();
     }
 };
@@ -199,24 +211,56 @@ var shuffleAnswers = function(answerBank) {
     return answerBank;
 }; 
 
+
+//todo: Display score on screen
+//todo: Input for user to enter name
+//todo: assign to localStorage
+
 var finishQuiz = function() {
+    deleteContent();
+
     console.log("You have finished the quiz! :)");
 
     //add existing userScore with time Left
     console.log("Time Left: " + timeLeft);
     console.log("Score from answers: " + userScore);
     userScore += timeLeft;
+
     //stop timer
     timeLeft = 0;
-    console.log("Your score was: " + userScore);
+    timerStop = true;
+    if (timerId != null) {
+        clearInterval(timerId);
+        console.log("Your score was: " + userScore);
+    } 
+    else {
+        console.log("Error! timerId == null")
+    }
+
+    //display score on screen
+    var displayScore = document.createElement("h1");
+    displayScore.className = "content title"
+    displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore;
+    container.appendChild(displayScore);
+
+    //create start button
+    var retryButton = document.createElement("button");
+    retryButton.className = "content";
+    retryButton.id = "#start-button";
+    retryButton.innerHTML = "Retry the Quiz?";
+    container.appendChild(retryButton);
+
+    retryButton.addEventListener("click", startButtonHandler);
+    
+
 }
 
 
-
 //TODO: create high scores screen (get from localStorage, display on the screen)
+//todo: add a button to refresh page
+
+
 
 
 //button press to delete html inside content creator and start generating questions
 startButton.addEventListener("click", startButtonHandler);
-
-//answerA.addEventListener("click",chooseAnswerHandler(answerA));
