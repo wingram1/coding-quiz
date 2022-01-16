@@ -9,6 +9,8 @@ var maxTime = 25;
 var timeLeft = 0;
 var timerId = null;
 var submitBtn = null;
+var users = null;
+var userId = null;
 
 
 
@@ -62,8 +64,6 @@ var deleteContent = function() {
     }
 };
 
-
-//TODO: timer function doesn't stop when finishQuiz() happens
 var countDown = function(){
     timeLeft = maxTime;
     timerId = setInterval(function() {
@@ -212,11 +212,6 @@ var shuffleAnswers = function(answerBank) {
     return answerBank;
 }; 
 
-
-//todo: Display score on screen
-//todo: Input for user to enter name
-//todo: assign to localStorage
-
 var finishQuiz = function() {
     deleteContent();
 
@@ -245,7 +240,7 @@ var finishQuiz = function() {
 
     //create container for input/submit/retry buttons
     var buttonContainer = document.createElement("div");
-    buttonContainer.className = "content button-container";
+    buttonContainer.className = "content container";
     buttonContainer.innerHTML = "";
     container.appendChild(buttonContainer);
 
@@ -267,31 +262,25 @@ var finishQuiz = function() {
     function scoreSubmitHandler() {
         console.log("submitButton has been clicked!");
         var userName = document.querySelector("#name-input").value;
-        var userId = {
+        userId = {
             name: userName,
             score: userScore
         };
 
-        //A: GET IT
-        var users = localStorage.getItem("Users");
-
-        //check if any existing users; if not, set to empty array
-        if (users === null) {
-            users = [];
-        } else {
-            //turn from string back into js object
-            users = JSON.parse(users);
-        }
-
-        console.log(users);
+        loadScores();
         
         //adds current userId to array
         users.push(userId);
 
-        console.log(users);
+        //re-sort users array based on score
+        users.sort((a, b) => {
+            return b.score - a.score;
+        });
 
-        //B: SAVE THAT TO SOMETHING
+        //save new array back to localStorage
         localStorage.setItem("Users", JSON.stringify(users));
+
+        highScoresDisplay();
     };
 
     //add event listener for retry button
@@ -302,7 +291,99 @@ var finishQuiz = function() {
 //TODO: create high scores screen (get from localStorage, display on the screen)
 //todo: add a button to refresh/reset page
 
+var loadScores = function() {
+        //LOAD HIGH SCORES
+        users = localStorage.getItem("Users");
 
+        //check if any existing users; if not, set to empty array
+        if (users === null) {
+            users = [];
+        } else {
+            //turn from string back into js object
+            users = JSON.parse(users);
+        }
+    
+        //for loop make new array with just scores
+        users.sort((a, b) => {
+            return b.score - a.score;
+        });
+};
+
+//function to display high scores
+var highScoresDisplay = function() {
+    //stop timer
+    timeLeft = 0;
+    if (timerId != null) {
+        clearInterval(timerId);
+    } 
+    else {
+        console.log("Error! timerId == null")
+    }
+
+    //delete existing content
+    deleteContent();
+
+    loadScores();
+
+    var listContainer = document.createElement("ol");
+    listContainer.className = "content container";
+    listContainer.innerHTML = "<h1 class='title content'>HIGH SCORES:</h1>"
+    container.appendChild(listContainer);
+
+
+    //for loop to display each name and score on page
+    for (let i=0; i<(users.length); i++) {
+        //sets upper limit of 10 users displayed on high scores
+        if (i >= 10) {
+            break;
+        }
+        else{
+            var workingListItem = document.createElement("li")
+            workingListItem.className = "content";
+            workingListItem.innerHTML = users[i].name + " ------- " + users[i].score;
+            console.log(workingListItem);
+            listContainer.appendChild(workingListItem);
+        }
+    }
+
+    // Create back button
+    var backButtonContainer = document.createElement("div");
+    backButtonContainer.className = "content container";
+    backButtonContainer.innerHTML = "<button class='content start-button back-button'>Back</button>";
+    container.appendChild(backButtonContainer);
+
+    var backButton = document.querySelector(".back-button");
+    backButton.addEventListener("click", resetQuiz);
+}
+
+var resetQuiz = function() {
+    //clear any existing content in the container
+    deleteContent();
+
+    //create title
+    var quizTitle = document.createElement("h1");
+    quizTitle.className = "content title";
+    quizTitle.innerHTML = "CODING QUIZ"
+    container.appendChild(quizTitle);
+
+    //create description
+    var quizDescription = document.createElement("h2");
+    quizDescription.className = "content description";
+    quizDescription.innerHTML = "Take the quiz, bitch. If you dare, that is. This quiz don't take no pussies, you gotta have real grit to take this quiz.Get outta here with that pussy ass not-know-it-all shit man, just push the button and take the fuckin' quiz!";
+    container.appendChild(quizDescription);
+
+    //create new button container + start button
+    var newButtonContainer = document.createElement("div");
+    newButtonContainer.className = "content container";
+    newButtonContainer.innerHTML = "<button class='content start-button'>START!</button>"
+    container.appendChild(newButtonContainer);
+
+    startButton = document.querySelector(".start-button");
+    startButton.addEventListener("click", startButtonHandler);
+};
+
+//load default html elements inside content container
+resetQuiz();
 
 //button press to delete html inside content creator and start generating questions
 startButton.addEventListener("click", startButtonHandler);
@@ -310,5 +391,5 @@ startButton.addEventListener("click", startButtonHandler);
 
 
 //button press to display high scores
-//highScores.addEventListener("click", loadHighScores);
+highScores.addEventListener("click", highScoresDisplay);
 

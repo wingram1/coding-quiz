@@ -33,7 +33,7 @@ main {
     border: solid black 1px;
 }
 
-.button-container{
+.container{
     /* border: solid black 1px; */
     height: 50%;
     display: flex;
@@ -42,8 +42,16 @@ main {
     align-items: center;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    border: solid black 1px;
+}
+
 .button-container div {
     margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .start-button {
@@ -66,6 +74,10 @@ main {
     display:block; 
     justify-content: center;
     align-items: center;
+}
+
+.content-container div {
+    justify-content: space-around;
 }
 
 #high-scores:hover{
