@@ -16,6 +16,7 @@ var userId = null;
 
 //create bank of question objects (array)
 //TODO: replace with questions pertaining to coding
+//TODO: make finishing touches to CSS
 var questionBank = [
     questionOne = {
         question: "What is 1 + 2?",
@@ -301,10 +302,6 @@ var finishQuiz = function() {
     //add event listener for retry button
     retryButton.addEventListener("click", startButtonHandler);
 };
-
-//TODO: have submit high scores button take user to high scores screen
-//TODO: create high scores screen (get from localStorage, display on the screen)
-//todo: add a button to refresh/reset page
 
 var loadScores = function() {
         //LOAD HIGH SCORES
