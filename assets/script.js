@@ -105,18 +105,15 @@ var nextQuestion = function(questionIndex) {
 
     var chooseAnswerHandler = function(pickedAnswer) {
         //log pickedAnswer to console
-        console.log(pickedAnswer.innerHTML + " has been chosen.");
+        console.log(pickedAnswer + " has been chosen.");
 
         //see if answer is correct or wrong
-        if (pickedAnswer.innerHTML == parseInt(currentQuestion.answerCorrect)) {
+        if (pickedAnswer == parseInt(currentQuestion.answerCorrect)) {
             console.log("You picked the correct answer.");
         }
-        else if (pickedAnswer.innerHTML == currentQuestion.wrong1 || pickedAnswer.innerHTML == currentQuestion.wrong2 || pickedAnswer.innerHTML == currentQuestion.wrong3) {
+        else if (pickedAnswer == currentQuestion.wrong1 || pickedAnswer== currentQuestion.wrong2 || pickedAnswer == currentQuestion.wrong3) {
             console.log("You picked the wrong answer.");
         }
-        else { //checking for errors
-            console.log("pickedAnswer: " + pickedAnswer.innerHTML);
-        }//todo: seperate the innerHTML of A: and answerChoices[] when creating the answer elements
     };
 
     //create answer elements
@@ -125,28 +122,28 @@ var nextQuestion = function(questionIndex) {
     answerA.id= "answerA";
     answerA.innerHTML = "A: " + answerChoices[0];
     container.appendChild(answerA);
-    answerA.addEventListener("click", function(){chooseAnswerHandler(answerA); });
+    answerA.addEventListener("click", function(){chooseAnswerHandler(answerChoices[0]); });
 
     var answerB = document.createElement("h2");
     answerB.className = "content answer";
     answerB.id= "answerB";
     answerB.innerHTML = "B: " + answerChoices[1];
     container.appendChild(answerB);
-    answerB.addEventListener("click", function(){chooseAnswerHandler(answerB); });
+    answerB.addEventListener("click", function(){chooseAnswerHandler(answerChoices[1]); });
 
     var answerC = document.createElement("h2");
     answerC.className = "content answer";
     answerC.id= "answerC";
     answerC.innerHTML = "C: " + answerChoices[2];
     container.appendChild(answerC);
-    answerC.addEventListener("click", function(){chooseAnswerHandler(answerC); });
+    answerC.addEventListener("click", function(){chooseAnswerHandler(answerChoices[2]); });
 
     var answerD = document.createElement("h2");
     answerD.className = "content answer";
     answerD.id= "answerD";
     answerD.innerHTML = "D: " + answerChoices[3];
     container.appendChild(answerD);
-    answerD.addEventListener("click", function(){chooseAnswerHandler(answerD); });
+    answerD.addEventListener("click", function(){chooseAnswerHandler(answerChoices[3]); });
 
     // var options = document.getElementsByClassName("answer");
 
