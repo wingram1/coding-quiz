@@ -5,7 +5,7 @@ var container = document.querySelector(".content-container");
 // var currentQuestion = 0;
 var questionMarker = 0;
 var userScore = 0;
-var maxTime = 25;
+var maxTime = 75;
 var timeLeft = 0;
 var timerId = null;
 var submitBtn = null;
@@ -46,16 +46,15 @@ var questionBank = [
         wrong3: "8"
     },
     questionFive = {
-        question: "What is 2 + 2?",
-        answerCorrect: "4",
-        wrong1: "5",
-        wrong2: "6",
-        wrong3: "8"
+        question: "What is William's favorite food?",
+        answerCorrect: "Mac & Cheese",
+        wrong1: "The souls of his enemies",
+        wrong2: "DeJah",
+        wrong3: "Moussaka"
     },
 ];
 
-//delete start-up screen inside <main>
-    //delete start-up content
+//function to delete content inside container
 var deleteContent = function() {
 
     var content = document.getElementsByClassName("content");
@@ -82,7 +81,6 @@ var countDown = function(){
 
 //Function to start the quiz
 var startButtonHandler = function(event) {
-    var targetEl = event.target; //todo: unneeded?
     console.log("startButton has been clicked.");
 
     //reset variables
@@ -139,6 +137,14 @@ var nextQuestion = function(questionIndex) {
 
                 deleteContent();
                 questionMarker++;
+
+                //create element to display correct
+                correctDisplay = document.createElement("h1");
+                correctDisplay.className = "content correct-display"
+                correctDisplay.innerHTML = "Correct!"
+
+                container.appendChild(correctDisplay);
+
                 nextQuestion(questionMarker);
             }
             else if (pickedAnswer == currentQuestion.wrong1 || pickedAnswer== currentQuestion.wrong2 || pickedAnswer == currentQuestion.wrong3) {
@@ -146,6 +152,13 @@ var nextQuestion = function(questionIndex) {
                 console.log("You picked the wrong answer.");
                 deleteContent();
                 questionMarker++;
+
+                // create element to display wrong
+                wrongDisplay = document.createElement("h1");
+                wrongDisplay.className = "content wrong-display"
+                wrongDisplay.innerHTML = "Wrong!"
+
+                container.appendChild(wrongDisplay);
                 nextQuestion(questionMarker);
             }
         };
@@ -220,6 +233,8 @@ var finishQuiz = function() {
     //add existing userScore with time Left
     console.log("Time Left: " + timeLeft);
     console.log("Score from answers: " + userScore);
+
+    var questionsRight = (userScore / 5);
     userScore += timeLeft;
 
     //stop timer
@@ -235,7 +250,7 @@ var finishQuiz = function() {
     //display score on screen
     var displayScore = document.createElement("h1");
     displayScore.className = "content title"
-    displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore;
+    displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore + ". You got " + questionsRight + " / " + questionBank.length + " questions right!";
     container.appendChild(displayScore);
 
     //create container for input/submit/retry buttons

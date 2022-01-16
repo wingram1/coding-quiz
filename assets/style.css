@@ -1,6 +1,6 @@
 body {
     min-height: 100vh;
-    background-color: pink;
+    background-color: gray;
     justify-content: space-around;
     display: flex;
     flex-direction: column;
@@ -11,7 +11,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: solid black 1px;
     padding: 5px;
     width: 80%;
 }
@@ -20,7 +19,6 @@ header div {
     display: inline-block;
     margin: 20px 40px 0 20px;
     font-size: 20px;
-    /* border: solid black 1px; */
 }
 
 main {
@@ -29,8 +27,6 @@ main {
     height: 90vh;
     justify-content: center;
     align-items: center;
-    background-color: gray;
-    border: solid black 1px;
 }
 
 .container{
@@ -65,6 +61,20 @@ main {
     border-radius: 100px;
 }
 
+.correct-display {
+    position: absolute;
+    bottom: 15%;
+    color: green;
+    border-top: 1px solid green;
+}
+
+.wrong-display {
+    position: absolute;
+    bottom: 15%;
+    color: red;
+    border-top: 1px solid red;
+}
+
 .content-container {
     background-color:rgb(196, 194, 194);
     border: solid black 2px;
@@ -95,7 +105,8 @@ main {
 }
 
 .answer {
-    font-size: 24px
+    font-size: 24px;
+    width: 50%;
 }
 
 .answer:hover {
