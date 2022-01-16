@@ -1,21 +1,26 @@
 body {
     min-height: 100vh;
-    background-color: pink
+    background-color: pink;
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    align-items: top;
+    align-items: center;
     border: solid black 1px;
+    padding: 5px;
+    width: 80%;
 }
 
 header div {
     display: inline-block;
     margin: 20px 40px 0 20px;
     font-size: 20px;
-    border: solid black 1px;
+    /* border: solid black 1px; */
 }
 
 main {
@@ -28,6 +33,30 @@ main {
     border: solid black 1px;
 }
 
+.button-container{
+    /* border: solid black 1px; */
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container div {
+    margin: auto;
+}
+
+.start-button {
+    background-color: red;
+    align-items: center;
+    width: 400px;
+    height: 100px;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    border-radius: 100px;
+}
+
 .content-container {
     background-color:rgb(196, 194, 194);
     border: solid black 2px;
@@ -37,6 +66,10 @@ main {
     display:block; 
     justify-content: center;
     align-items: center;
+}
+
+#high-scores:hover{
+    border: solid red 2px;
 }
 
 .title {

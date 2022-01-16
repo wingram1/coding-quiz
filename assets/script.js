@@ -1,14 +1,14 @@
 //set up variables based on html id's
-var highScoresDisplay = document.querySelector("#high-scores");
-var startButton = document.querySelector("#start-button");
+var highScores = document.querySelector("#high-scores");
+var startButton = document.querySelector(".start-button");
 var container = document.querySelector(".content-container");
 // var currentQuestion = 0;
 var questionMarker = 0;
 var userScore = 0;
 var maxTime = 25;
 var timeLeft = 0;
-var timerStop = false;
 var timerId = null;
+var submitBtn = null;
 
 
 
@@ -70,10 +70,9 @@ var countDown = function(){
     timeLeft--;
     document.querySelector("#time-left").innerHTML = "Time Left: " + timeLeft;
 
-    if (timeLeft <= 0 || timerStop == true) {
+    if (timeLeft <= 0) {
         //stop timer and finish quiz
         clearInterval(timerId);
-        timerStop = true;
         timeLeft = 0;
         console.log("countDown has completed");
         finishQuiz();
@@ -90,7 +89,9 @@ var startButtonHandler = function(event) {
     questionMarker = 0;
     timeLeft = maxTime;
     userScore = 0;
-    timerStop = false;
+
+    //display max time so it doesn't decrease before displaying in countDown()
+    document.querySelector("#time-left").innerHTML = "Time Left: " + timeLeft;
     
     //start timer
     countDown();
@@ -228,7 +229,6 @@ var finishQuiz = function() {
 
     //stop timer
     timeLeft = 0;
-    timerStop = true;
     if (timerId != null) {
         clearInterval(timerId);
         console.log("Your score was: " + userScore);
@@ -243,24 +243,72 @@ var finishQuiz = function() {
     displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore;
     container.appendChild(displayScore);
 
-    //create start button
+    //create container for input/submit/retry buttons
+    var buttonContainer = document.createElement("div");
+    buttonContainer.className = "content button-container";
+    buttonContainer.innerHTML = "";
+    container.appendChild(buttonContainer);
+
+    var scoreInputContainer = document.createElement("div");
+    scoreInputContainer.className = "content score-input";
+    scoreInputContainer.innerHTML = "<input type='text' id='name-input' placeholder='Your Name'></input><button class='submit-btn' type='submit'>Submit</button>";
+    buttonContainer.appendChild(scoreInputContainer);
+
+    //create retry button
     var retryButton = document.createElement("button");
-    retryButton.className = "content";
-    retryButton.id = "#start-button";
+    retryButton.className = "content start-button";
     retryButton.innerHTML = "Retry the Quiz?";
-    container.appendChild(retryButton);
+    buttonContainer.appendChild(retryButton);
 
+    //add event listener for submit button to run scoreSubmitHandler
+    var submitButton = document.querySelector(".submit-btn");
+    submitButton.addEventListener("click", scoreSubmitHandler);
+
+    function scoreSubmitHandler() {
+        console.log("submitButton has been clicked!");
+        var userName = document.querySelector("#name-input").value;
+        var userId = {
+            name: userName,
+            score: userScore
+        };
+
+        //A: GET IT
+        var users = localStorage.getItem("Users");
+
+        //check if any existing users; if not, set to empty array
+        if (users === null) {
+            users = [];
+        } else {
+            //turn from string back into js object
+            users = JSON.parse(users);
+        }
+
+        console.log(users);
+        
+        //adds current userId to array
+        users.push(userId);
+
+        console.log(users);
+
+        //B: SAVE THAT TO SOMETHING
+        localStorage.setItem("Users", JSON.stringify(users));
+    };
+
+    //add event listener for retry button
     retryButton.addEventListener("click", startButtonHandler);
-    
+};
 
-}
-
-
+//TODO: have submit high scores button take user to high scores screen
 //TODO: create high scores screen (get from localStorage, display on the screen)
-//todo: add a button to refresh page
-
+//todo: add a button to refresh/reset page
 
 
 
 //button press to delete html inside content creator and start generating questions
 startButton.addEventListener("click", startButtonHandler);
+
+
+
+//button press to display high scores
+//highScores.addEventListener("click", loadHighScores);
+
