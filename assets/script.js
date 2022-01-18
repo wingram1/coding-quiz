@@ -2,7 +2,8 @@
 var highScores = document.querySelector("#high-scores");
 var startButton = document.querySelector(".start-button");
 var container = document.querySelector(".content-container");
-// var currentQuestion = 0;
+
+//misc variables to be made global
 var questionMarker = 0;
 var userScore = 0;
 var maxTime = 75;
@@ -17,6 +18,7 @@ var userId = null;
 //create bank of question objects (array)
 //TODO: replace with questions pertaining to coding
 //TODO: make finishing touches to CSS
+//todo: when finished, add screenshot to README
 var questionBank = [
     questionOne = {
         question: "What is 1 + 2?",
@@ -74,7 +76,6 @@ var countDown = function(){
         //stop timer and finish quiz
         clearInterval(timerId);
         timeLeft = 0;
-        console.log("countDown has completed");
         finishQuiz();
     }
 }, 1000);
@@ -82,8 +83,6 @@ var countDown = function(){
 
 //Function to start the quiz
 var startButtonHandler = function(event) {
-    console.log("startButton has been clicked.");
-
     //reset variables
     questionMarker = 0;
     timeLeft = maxTime;
@@ -123,16 +122,9 @@ var nextQuestion = function(questionIndex) {
         //shuffle answers
         shuffleAnswers(answerChoices)
 
-        console.log("currentQuestion.answerCorrect: " + currentQuestion.answerCorrect);
-
         var chooseAnswerHandler = function(pickedAnswer) {
-            //log pickedAnswer to console
-            console.log(pickedAnswer + " has been chosen.");
-
             //see if answer is correct or wrong
             if (pickedAnswer == currentQuestion.answerCorrect) {
-                console.log("You picked the correct answer.");
-
                 //increase user score, delete content and cycle to next question
                 userScore += 5;
 
@@ -150,7 +142,6 @@ var nextQuestion = function(questionIndex) {
             }
             else if (pickedAnswer == currentQuestion.wrong1 || pickedAnswer== currentQuestion.wrong2 || pickedAnswer == currentQuestion.wrong3) {
                 //delete content and cycle to next question without increasing user score
-                console.log("You picked the wrong answer.");
                 deleteContent();
                 questionMarker++;
 
@@ -201,9 +192,6 @@ var nextQuestion = function(questionIndex) {
 
 //function to put answer properties into an array and shuffle
 var shuffleAnswers = function(answerBank) {
-    //log old answers array
-    console.log("OLD: " + answerBank);
-
     //set variable 
     var currentIndex = answerBank.length, temporaryValue, randomIndex;
 
@@ -221,21 +209,17 @@ var shuffleAnswers = function(answerBank) {
         //set the random index to the old current index
         answerBank[randomIndex] = temporaryValue;
     }
-    //log answerChoices to ensure the function worked
-    console.log("FINAL: " + answerBank);
     return answerBank;
 }; 
 
 var finishQuiz = function() {
+    //clear content container
     deleteContent();
 
-    console.log("You have finished the quiz! :)");
+    //Add variable do user can see their percentage correct
+    var questionsRight = (userScore / questionBank.length);
 
-    //add existing userScore with time Left
-    console.log("Time Left: " + timeLeft);
-    console.log("Score from answers: " + userScore);
-
-    var questionsRight = (userScore / 5);
+    //Add existing score with userScore
     userScore += timeLeft;
 
     //stop timer
@@ -250,7 +234,7 @@ var finishQuiz = function() {
 
     //display score on screen
     var displayScore = document.createElement("h1");
-    displayScore.className = "content title"
+    displayScore.className = "content title";
     displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore + ". You got " + questionsRight + " / " + questionBank.length + " questions right!";
     container.appendChild(displayScore);
 
@@ -276,27 +260,33 @@ var finishQuiz = function() {
     submitButton.addEventListener("click", scoreSubmitHandler);
 
     function scoreSubmitHandler() {
-        console.log("submitButton has been clicked!");
         var userName = document.querySelector("#name-input").value;
-        userId = {
-            name: userName,
-            score: userScore
-        };
+        if (userName.length > 15) {
+            window.alert("Your name can only be 15 characters or less!")
+        } 
+        else if (userName.length <= 15) {
+            console.log("submitButton has been clicked!");
+            var userName = document.querySelector("#name-input").value;
+            userId = {
+                name: userName,
+                score: userScore
+            };
 
-        loadScores();
-        
-        //adds current userId to array
-        users.push(userId);
+            loadScores();
+            
+            //adds current userId to array
+            users.push(userId);
 
-        //re-sort users array based on score
-        users.sort((a, b) => {
-            return b.score - a.score;
-        });
+            //re-sort users array based on score
+            users.sort((a, b) => {
+                return b.score - a.score;
+            });
 
-        //save new array back to localStorage
-        localStorage.setItem("Users", JSON.stringify(users));
+            //save new array back to localStorage
+            localStorage.setItem("Users", JSON.stringify(users));
 
-        highScoresDisplay();
+            highScoresDisplay();
+        }
     };
 
     //add event listener for retry button
