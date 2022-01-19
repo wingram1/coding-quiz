@@ -1,6 +1,6 @@
 //set up variables based on html id's
 var highScores = document.querySelector("#high-scores");
-var startButton = document.querySelector(".start-button");
+var startButton = document.querySelector(".red-button");
 var container = document.querySelector(".content-container");
 
 //misc variables to be made global
@@ -16,44 +16,41 @@ var userId = null;
 
 
 //create bank of question objects (array)
-//TODO: replace with questions pertaining to coding
-//TODO: make finishing touches to CSS
-//todo: when finished, add screenshot to README
 var questionBank = [
     questionOne = {
-        question: "What is 1 + 2?",
-        answerCorrect: "3",
-        wrong1: "4",
-        wrong2: "6",
-        wrong3: "8"
+        question: "Commonly used data types do not include:",
+        answerCorrect: "alerts",
+        wrong1: "booleans",
+        wrong2: "strings",
+        wrong3: "numbers"
     },
     questionTwo = {
-        question: "What is 1 + 3?",
-        answerCorrect: "4",
-        wrong1: "3",
-        wrong2: "6",
-        wrong3: "8"
+        question: "The condition in an if / else statement is enclosed with ______.",
+        answerCorrect: "parentheses",
+        wrong1: "quotes",
+        wrong2: "curly brackets",
+        wrong3: "square brackets"
     },
     questionThree = {
-        question: "What is 2 + 3?",
-        answerCorrect: "5",
-        wrong1: "4",
-        wrong2: "6",
-        wrong3: "8"
+        question: "Arrays in JavaScript can be used to store ______.",
+        answerCorrect: "all of these",
+        wrong1: "numbers and strings",
+        wrong2: "other arrays",
+        wrong3: "booleans"
     },
     questionFour = {
-        question: "What is 3 + 3?",
-        answerCorrect: "6",
-        wrong1: "4",
-        wrong2: "5",
-        wrong3: "8"
+        question: "String values must be enclosed within ______ when being assigned to variables.",
+        answerCorrect: "quotes",
+        wrong1: "commas",
+        wrong2: "curly brackets",
+        wrong3: "parentheses"
     },
     questionFive = {
-        question: "What is William's favorite food?",
-        answerCorrect: "Mac & Cheese",
-        wrong1: "The souls of his enemies",
-        wrong2: "DeJah",
-        wrong3: "Moussaka"
+        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        answerCorrect: "console.log()",
+        wrong1: "JavaScript",
+        wrong2: "for loops",
+        wrong3: "terminal/bash"
     },
 ];
 
@@ -145,6 +142,10 @@ var nextQuestion = function(questionIndex) {
                 deleteContent();
                 questionMarker++;
 
+                //subtract time from clock and update html element
+                timeLeft -= 10;
+                document.querySelector("#time-left").innerHTML = "Time Left: " + timeLeft;
+
                 // create element to display wrong
                 wrongDisplay = document.createElement("h1");
                 wrongDisplay.className = "content wrong-display"
@@ -235,7 +236,7 @@ var finishQuiz = function() {
     //display score on screen
     var displayScore = document.createElement("h1");
     displayScore.className = "content title";
-    displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore + ". You got " + questionsRight + " / " + questionBank.length + " questions right!";
+    displayScore.innerHTML = "Congratulations on finishing the quiz! Your score was: " + userScore + ".<br> You got " + questionsRight + " / " + questionBank.length + " questions right!";
     container.appendChild(displayScore);
 
     //create container for input/submit/retry buttons
@@ -251,9 +252,14 @@ var finishQuiz = function() {
 
     //create retry button
     var retryButton = document.createElement("button");
-    retryButton.className = "content start-button";
+    retryButton.className = "content red-button";
     retryButton.innerHTML = "Retry the Quiz?";
     buttonContainer.appendChild(retryButton);
+
+    //If score is 0, alert user to tell them they suck at coding.
+    if (questionsRight == 0) {
+        window.alert("Wow, 0/5? And I thought I was bad at this!");
+    }
 
     //add event listener for submit button to run scoreSubmitHandler
     var submitButton = document.querySelector(".submit-btn");
@@ -351,7 +357,7 @@ var highScoresDisplay = function() {
     // Create back button
     var backButtonContainer = document.createElement("div");
     backButtonContainer.className = "content container";
-    backButtonContainer.innerHTML = "<button class='content start-button back-button'>Back</button>";
+    backButtonContainer.innerHTML = "<button class='content red-button back-button'>Back</button>";
     container.appendChild(backButtonContainer);
 
     var backButton = document.querySelector(".back-button");
@@ -371,16 +377,16 @@ var resetQuiz = function() {
     //create description
     var quizDescription = document.createElement("h2");
     quizDescription.className = "content description";
-    quizDescription.innerHTML = "Take the quiz, bitch. If you dare, that is. This quiz don't take no pussies, you gotta have real grit to take this quiz.Get outta here with that pussy ass not-know-it-all shit man, just push the button and take the fuckin' quiz!";
+    quizDescription.innerHTML = "Try to answer the following code-related question within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds. Good luck!";
     container.appendChild(quizDescription);
 
     //create new button container + start button
     var newButtonContainer = document.createElement("div");
     newButtonContainer.className = "content container";
-    newButtonContainer.innerHTML = "<button class='content start-button'>START!</button>"
+    newButtonContainer.innerHTML = "<button class='content red-button'>START!</button>"
     container.appendChild(newButtonContainer);
 
-    startButton = document.querySelector(".start-button");
+    startButton = document.querySelector(".red-button");
     startButton.addEventListener("click", startButtonHandler);
 };
 
